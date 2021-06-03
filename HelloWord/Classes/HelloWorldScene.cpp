@@ -86,36 +86,295 @@ bool HelloWorld::init()
     // add a label shows "Hello World"
     // create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+   
+
+    // add "HelloWorld" splash screen"
+    auto sprite = Sprite::create("background.png");
+    if (sprite == nullptr)
+    {
+        problemLoading("'background.png'");
+    }
+    else
+    {
+        // position the sprite on the center of the screen
+        sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+        // add the sprite as a child to this layer
+        this->addChild(sprite, 0);
+    }
+
+    //add sprite
+    auto character = Sprite::create("character/character_01.png");
+    character->setPosition({ 250.0f,400.f });
+    this->addChild(character);
+
+    //add animation 
+    auto characterAnimation = Animation::create();
+
+    characterAnimation->setDelayPerUnit(0.15f);
+
+    characterAnimation->setLoops(-1);
+
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_01.png")->getSpriteFrame());
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_02.png")->getSpriteFrame());
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_03.png")->getSpriteFrame());
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_04.png")->getSpriteFrame());
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_05.png")->getSpriteFrame());
+    characterAnimation->addSpriteFrame(Sprite::create("character/character_06.png")->getSpriteFrame());
+
+    Animate* animate = Animate::create(characterAnimation);
+
+    character->runAction(animate);
+
+
+    auto shadow = Sprite::create("character/shadow.png");
+
+    shadow->setPosition(Vec2(character->getContentSize().width / 2, 10.5f));
+
+    character->addChild(shadow, -1);
+
+    //create animation cache
+    auto skillAnimation = Animation::create();
+    skillAnimation->setDelayPerUnit(0.15f);
+    skillAnimation->setLoops(1);
+
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack1.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack2.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack3.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack4.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack5.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack6.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack7.png")->getSpriteFrame());
+    skillAnimation->addSpriteFrame(Sprite::create("skill/attack8.png")->getSpriteFrame());
+
+    const std::string k_skillAnimationName = "skillAnimation";
+
+    AnimationCache::getInstance()->addAnimation(skillAnimation, k_skillAnimationName);
+
+    //skillAnimation 2
+    auto skillAnimation2 = Animation::create();
+    skillAnimation2->setDelayPerUnit(0.15f);
+    skillAnimation2->setLoops(1);
+
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_0.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_1.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_2.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_3.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_4.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_5.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_6.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_7.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_8.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_8.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_10.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_11.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_12.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_13.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_14.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_15.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_16.png")->getSpriteFrame());
+    skillAnimation2->addSpriteFrame(Sprite::create("skill_02/skill_02_17.png")->getSpriteFrame());
+ 
+    const std::string k_skillAnimationName2 = "skillAnimation2";
+
+    AnimationCache::getInstance()->addAnimation(skillAnimation2, k_skillAnimationName2);
+    //onpress clipkeyboard
+    auto keyboardListener = EventListenerKeyboard::create();
+
+    keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
+        switch (keycode)
+        {
+        case (EventKeyboard::KeyCode::KEY_A):
+        {
+            auto skill = Sprite::create("skill_02/skill_02_0.png");
+            skill->setPosition(character->getPosition() + Vec2(+100, 0));
+           
+
+            auto skill1 = Sprite::create("skill_02/skill_02_0.png");
+            skill1->setPosition(character->getPosition() + Vec2(+100, +300));
+           
+
+            auto skill2 = Sprite::create("skill_02/skill_02_0.png");
+            skill2->setPosition(character->getPosition() + Vec2(+200, +100));
+
+            this->addChild(skill);
+            this->addChild(skill1);
+            this->addChild(skill2);
+
+            Animate* animate = Animate::create(AnimationCache::getInstance()->getAnimation("skillAnimation2"));
+            Animate* animate2 = Animate::create(AnimationCache::getInstance()->getAnimation("skillAnimation2"));
+            Animate* animate3 = Animate::create(AnimationCache::getInstance()->getAnimation("skillAnimation2"));
+
+            skill->runAction(Sequence::createWithTwoActions(animate, RemoveSelf::create()));
+            skill1->runAction(Sequence::createWithTwoActions(animate2, RemoveSelf::create()));
+            skill2->runAction(Sequence::createWithTwoActions(animate3, RemoveSelf::create()));
+            break;
+        }
+        // Jump
+        case (EventKeyboard::KeyCode::KEY_0): {
+            character->runAction(JumpBy::create(1.0f, Point(+50.0f,0),50.f,1));
+            break;
+        }
+        // move character by pisition(200.0f, 0) in 2 second
+        case (EventKeyboard::KeyCode::KEY_1): {
+            character->runAction(MoveBy::create(2.0f, Point(-200.0f, 0)));
+            break;
+        } case
+        (EventKeyboard::KeyCode::KEY_2): {
+            character->runAction(RotateBy::create(2.0f, 0, 180.0f));
+            break;
+        }
+        case (EventKeyboard::KeyCode::KEY_3): {
+            character->runAction(MoveBy::create(2.0f, Point(200.0f, 0)));
+            break;
+        }
+        case (EventKeyboard::KeyCode::KEY_4): {
+            character->runAction(SkewBy::create(2.0f, 90.f,90.0f));
+            break;
+        }
+        case (EventKeyboard::KeyCode::KEY_5): {
+            character->runAction(RotateBy::create(2.0f, 0, -180.0f));
+            break;
+        }
+                                            //face to 
+        case (EventKeyboard::KeyCode::KEY_6): {
+            character->runAction(FadeTo::create(2.0f,80));
+            break;
+        }
+                                            //face in
+        case (EventKeyboard::KeyCode::KEY_7): {
+            character->runAction(FadeIn::create(0));
+            break;
+        } //face out
+        case (EventKeyboard::KeyCode::KEY_8): {
+            character->runAction(FadeOut::create(0));
+            break;
+        }
+                                            //BezierTo
+        case (EventKeyboard::KeyCode::KEY_9): {
+            ccBezierConfig bezier;
+            bezier.controlPoint_1 = Point(0, visibleSize.height / 2);
+            bezier.controlPoint_1 = Point(300, -visibleSize.height / 2);
+            bezier.endPosition = Point(200, 100);
+
+            character->runAction(BezierTo::create(3, bezier));
+            break;  
+        }
+                                            //TinyBy
+        case (EventKeyboard::KeyCode::KEY_KP_PLUS): {
+            character->runAction(TintBy::create(2.0f,255,0,255));
+            break;
+        }  
+                                                  //Tinito
+        case (EventKeyboard::KeyCode::KEY_KP_MINUS): {
+            character->runAction(TintTo::create(2.0f, 0, 0, 255));
+          
+            break;
+        }
+        //bezierBy
+        case (EventKeyboard::KeyCode::KEY_KP_MULTIPLY): {
+            ccBezierConfig bezier;
+            bezier.controlPoint_1 = Point(0, visibleSize.height / 2);
+            bezier.controlPoint_1 = Point(300, -visibleSize.height / 2);
+            bezier.endPosition = Point(200, 100);
+
+            character->runAction(BezierBy::create(3,bezier));
+        }
+        case (EventKeyboard::KeyCode::KEY_M): {
+            character->runAction(Place::create(Point(98.f,280.f)));
+           
+        }
+                                            //Repeat
+        case (EventKeyboard::KeyCode::KEY_N): {
+            character->runAction(RepeatForever::create(RotateBy::create(2.f,45)));
+
+        }
+        case (EventKeyboard::KeyCode::KEY_B): {
+            character->runAction(Sequence::create(RotateBy::create(2.f, 45), MoveBy::create(2.0f, Point(-200.0f, 0)),NULL));
+
+        }
+
+                                    //EX1:
+        case (EventKeyboard::KeyCode::KEY_P): {
+            auto movoToCenter = MoveTo::create(2.0f, Point(visibleSize.width/2, visibleSize.height/  2));
+           //CallFunc::create(CC_CALLBACK_0(HelloWorld::endMove, this));
+            auto printf = CallFunc::create(CC_CALLBACK_0(HelloWorld::printIntoScreen,this));
+            
+            auto jump = JumpTo::create(1.0f, Point(visibleSize.width, character->getPosition().y), 50, 1);
+
+            auto back = CallFunc::create([=] {
+                backToTheBeginPosition(character);
+                });
+            auto delay = DelayTime::create(5);
+
+          //  void HelloWorld::backToTheBeginPosition(cocos2d::Sprite* a) {
+            character->runAction(Sequence::create(movoToCenter, printf, jump,delay,back , NULL));
+            break;
+        }
+        case (EventKeyboard::KeyCode::KEY_O): {
+            auto movoToCenter = MoveTo::create(2.0f, Point(visibleSize.width / 2, visibleSize.height / 2));
+            auto scaleCharacter = ScaleTo::create(1.f, 2);
+            auto callbackJump = CallFunc::create([]() {
+                log("Jumped!");
+                });
+            //auto mySpawn = Spawn::create(movoToCenter, scaleCharacter,callbackJump,NULL);
+            character->runAction(Spawn::create(movoToCenter, scaleCharacter, callbackJump, NULL));
+
+        }
+        default:
+            break;
+        }
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+    
+    //onclick
+    auto touchListenner = EventListenerTouchOneByOne::create();
+
+    touchListenner->onTouchBegan = [](Touch* touch, Event* event) {
+        return true;
+    };
+    touchListenner->onTouchMoved = [](Touch* touch, Event* event) {
+
+    };
+
+    touchListenner->onTouchEnded = [=](Touch* touch, Event* event) {
+        auto skill = Sprite::create("skill/attack1.png");
+        skill->setPosition(touch->getLocation());
+        this->addChild(skill);
+
+        Animate* animate = Animate::create(AnimationCache::getInstance()->getAnimation("skillAnimation"));
+
+        skill->runAction(Sequence::createWithTwoActions(animate, RemoveSelf::create()));
+
+    };
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListenner, this);
+
+  
+
+
+    return true;
+}
+void HelloWorld::printIntoScreen() {
+    std::string s="Quyen Cong Hello moi nguoi";
+
+    auto label = Label::createWithTTF(s, "fonts/Marker Felt.ttf", 24);
     if (label == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
     }
     else
     {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
+    // position the label on the center of the screen
+        label->setPosition(Vec2(1024 /2, 768/2));
 
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
-    return true;
+}
+void HelloWorld::backToTheBeginPosition(cocos2d::Sprite* a) {
+    a->setPosition({ 250.0f,400.f });
 }
 
 
